@@ -29,7 +29,7 @@ h1 {
 }
 
 #homeimg {
-    width: 600px;
+    width: 100%;
     mix-blend-mode: lighten;
     border: 5px solid;
     border-radius: 20px;
@@ -106,6 +106,17 @@ h1 {
     }
   }
 
+@media only screen and (max-width: 300px) {
+    .heading {
+        font-size: 30%;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+    .aboutparagraph {
+        font-size: 15px;
+    }
+  }
 
 
 
@@ -114,7 +125,6 @@ h1 {
 
 
 .footer {
-    position: fixed;
     left: 0;
     font-family: 'Lato', sans-serif;
 	text-align: center;
