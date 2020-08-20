@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>E-learn</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/bootstrap-social.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<section class="container">
+<nav class="navbar navbar-expand-lg  border border-dark rounded-bottom">
+  <a class="navbar-brand" style="color: #251F44;" href="/home"><strong>E-Learn</strong></a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav ml-auto" style="font-style: italic;">
+      <li class="nav-item">
+        <a class="nav-link navbarlink" href="/courses">Courses</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link navbarlink" href="/home">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link navbarlink" href="/about">About us</a>
+      </li>
+    </ul>
+  </div>
+  <% if (!currentUser){ %>
+    <a class="btn btn-md m-1" style="background-color: #251F44; color: #F5F5F5;" href="/login">Login</a>
+    <a class="btn btn-md" style="background-color: #519872; color: #F5F5F5;" href="/register">Register</a>
+  <% } else { %>
+          
+          <div class="dropdown">
+            <button class="dropbtn"><i class="fa fa-user p-1"></i><%= currentUser.name %></button>
+            <div class="dropdown-content">
+              <a href="#">Edit Profile</a>
+              <a href="#">My Courses</a>
+            </div>
+          </div>
+        <div>
+          <a class="btn btn-md m-1" style="background-color: #ff7171; color: #F5F5F5;" href="/logout">Logout</a>
+        </div>
+ <% } %>
+  
+  
+</nav>
+</section>
+<body>
+
