@@ -11,9 +11,12 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <section class="container">
-<nav class="navbar navbar-expand-lg  border border-dark rounded-bottom">
+<nav class="navbar navbar-expand-md  border border-dark rounded-bottom">
   <a class="navbar-brand" style="color: #251F44;" href="/home"><strong>E-Learn</strong></a>
-  <div class="collapse navbar-collapse">
+  <button class="navbar-toggler navbar-dark" style="background-color: #251F44;" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav ml-auto" style="font-style: italic;">
       <li class="nav-item">
         <a class="nav-link navbarlink" href="/courses">Courses</a>
@@ -42,8 +45,6 @@
           <a class="btn btn-md m-1" style="background-color: #ff7171; color: #F5F5F5;" href="/logout">Logout</a>
         </div>
  <% } %>
-  
-  
 </nav>
 </section>
 <body>

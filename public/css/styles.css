@@ -60,7 +60,7 @@ h1 {
 
 .aboutparagraph {
     text-align: center;
-    font-size: 30px;
+    font-size: 25px;
     letter-spacing: 4px;
     padding-top: 15%;
 }
@@ -99,27 +99,12 @@ h1 {
 .dropdown:hover .dropdown-content {display: block;}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@media only screen and (max-width: 990px) {
+    .aboutparagraph {
+        font-size: 25px;
+        padding-top: 0%;
+    }
+  }
 
 
 
