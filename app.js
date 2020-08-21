@@ -73,9 +73,9 @@ app.use(function(req, res, next){
 //   });
 //   const upload = multer({storage});
 
-mongoose.connect("mongodb://localhost:27017/elearnDB",{ useUnifiedTopology: true, useNewUrlParser: true } );
+// mongoose.connect("mongodb://localhost:27017/elearnDB",{ useUnifiedTopology: true, useNewUrlParser: true } );
 
-// mongoose.connect("mongodb+srv://Anand:12345@yourblogdb.lhdpi.mongodb.net/blogDB",{ useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect("mongodb+srv://Anand:12345@yourblogdb.lhdpi.mongodb.net/blogDB",{ useUnifiedTopology: true, useNewUrlParser: true });
 
 mongoose.set('useCreateIndex', true);
 
