@@ -1,0 +1,59 @@
+<%- include('partials/header') %>
+
+
+<div class="container p-5">
+    <div class="row">
+        <div class="bg-light col-lg-6">
+            <h1 class="text-center"><%=name %></h1>
+            <div class="m-1">
+                <h3>What you'll learn</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col"><%= tablehead1 %></th>
+                        <th scope="col"><%= tablehead2 %></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td scope="row"><%= tablebody1 %></th>
+                            <td><%= tablebody2 %></td>
+                        </tr>
+                        <tr>
+                            <td scope="row"><%= tablebody11 %></th>
+                            <td><%= tablebody21 %></td>
+                        </tr>
+                        <tr>
+                            <td scope="row"><%= tablebody12 %></th>
+                            <td><%= tablebody22 %></td>
+                        </tr>
+                        <tr>
+                            <td scope="row"><%= tablebody13 %></th>
+                            <td><%= tablebody23 %></td>
+                        </tr>
+                    </tbody>
+                  </table>
+            </div>
+
+
+
+        </div>
+        <div class="col-lg-6">
+            <div class="card text-center" style="width: 100%;">
+                <div class="card-header">
+                    <img class="card-img-top" src="<%=image %>" alt="">
+                </div>
+                <div class="card-body">
+                    <h4>Price</h4>
+                    <p>30 Days Money Back Guarantee</p>
+                    <p>₹ <%= price %></p>
+                    <a class="btn btn-md btn-success" href="#">Enroll Now</a>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
