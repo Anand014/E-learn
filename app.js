@@ -77,10 +77,9 @@ app.use(function (req, res, next) {
 
 // mongoose.connect("mongodb://localhost:27017/elearnDB",{ useUnifiedTopology: true, useNewUrlParser: true } );
 
-mongoose.connect(
-  "mongodb+srv://Anand:12345@yourblogdb.lhdpi.mongodb.net/blogDB",
-  { useUnifiedTopology: true, useNewUrlParser: true }
-);
+
+mongoose.connect("mongodb+srv://Anand:12345@yourblogdb.lhdpi.mongodb.net/blogDB",{ useUnifiedTopology: true, useNewUrlParser: true });
+
 
 mongoose.set("useCreateIndex", true);
 
@@ -314,3 +313,5 @@ function isLoggedOut(req, res, next) {
 app.listen(process.env.PORT || 3000, process.env.IP, () => {
   console.log("The server has started at port 3000.");
 });
+
+
