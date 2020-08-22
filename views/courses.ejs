@@ -8,21 +8,12 @@
       <div class="card m-3" style="width: 18rem;">
         <h2 class="text-center"><%=course.name%></h2>
         <img class="card-img" src="<%=course.image%>" />
-        <div class="body">
-          <div class="row">
-            <div class="col text-right">
+        <div class="body m-1">
               <a
                 href="/courses/<%= course._id %>"
                 class="btn btn-sm btn-block btn-info"
                 >More Info</a
               >
-            </div>
-            <div class="col text-left">
-              <a href="#" class="btn btn-sm btn-block btn-success"
-                >Enroll now</a
-              >
-            </div>
-          </div>
         </div>
       </div>
     </div>
