@@ -8,11 +8,28 @@
                 <h2 class="text-center"><%= user.mycourses[i].name %></h2>
                 <img class="card-img" src="<%= user.mycourses[i].image %>"/>
                 <div class="body m-1">
-                      <a
-                        href="#"
-                        class="btn btn-sm btn-block btn-dark"
-                        >Read Now</a
-                      >
+
+
+                  <button type="button" class="btn btn-sm btn-block btn-dark" data-toggle="modal" data-target="#myModal">
+                    Read Now
+                  </button>
+                  
+
+                  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Course Lecture</h4>
+                        </div>
+                        <div class="modal-body">
+                          <iframe width="480" height="360" src="<%= user.mycourses[i].video %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

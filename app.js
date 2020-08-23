@@ -1,14 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const path = require("path");
-const crypto = require("crypto");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const multer = require("multer");
-const GridFsStorage = require("multer-gridfs-storage");
-const Grid = require("gridfs-stream");
 const methodOverride = require("method-override");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
@@ -39,42 +34,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-// UPLOAD IMAGE IN DATABASE------>
-
-// const mongoURI = 'mongodb://localhost:27017/elearnDB';
-
-// const conn = mongoose.createConnection(mongoURI, { useUnifiedTopology: true, useNewUrlParser: true });
-
-// // Init gfs
-// let gfs;
-
-// conn.once("open", () => {
-//     // Init stream
-//     gfs = Grid(conn.db, mongoose.mongo);
-//     gfs.collection("uploads");
-// });
-
-// // create storage engine
-// const storage = new GridFsStorage({
-//     url: mongoURI,
-//     file: (req, file) => {
-//       return new Promise((resolve, reject) => {
-//         crypto.randomBytes(16, (err, buf) => {
-//           if (err) {
-//             return reject(err);
-//           }
-//           const filename = buf.toString('hex') + path.extname(file.originalname);
-//           const fileInfo = {
-//             filename: filename,
-//             bucketName: 'uploads'
-//           };
-//           resolve(fileInfo);
-//         });
-//       });
-//     }
-//   });
-//   const upload = multer({storage});
-
 // mongoose.connect("mongodb://localhost:27017/elearnDB",{ useUnifiedTopology: true, useNewUrlParser: true } );
 
 
@@ -96,7 +55,8 @@ const courseSchema = {
   tablebody21: String,
   tablebody22: String,
   tablebody23: String,
-  price: String,
+  video: String,
+  price: String
 };
 
 const Course = mongoose.model("Course", courseSchema);
@@ -190,6 +150,25 @@ app.get("/admin",isLoggedOut, function (req, res) {
   res.render("admin");
 });
 
+app.get("/editProfile",isLoggedIn, function(req, res){
+  res.render("editProfile");
+});
+
+app.post("/editProfile",isLoggedIn, function(req, res){
+  const userName = req.body.username;
+
+  User.updateOne({_id: req.user._id},{
+    name: userName 
+  }, function(err){
+    if(err){
+      console.log(err);
+    } else {
+      res.redirect("/");
+    }
+  });
+});
+
+
 app.post("/admin", function (req, res) {
   const adminPassword = process.env.ADMIN_PASSWORD;
   const checkadminPassword = req.body.verify;
@@ -214,6 +193,7 @@ app.post("/courses", function (req, res) {
   const tablebody21 = req.body.tablebody21;
   const tablebody22 = req.body.tablebody22;
   const tablebody23 = req.body.tablebody23;
+  const video = req.body.video;
   const price = req.body.price;
 
   const newCourse = {
@@ -229,7 +209,8 @@ app.post("/courses", function (req, res) {
     tablebody21: tablebody21,
     tablebody22: tablebody22,
     tablebody23: tablebody23,
-    price: price,
+    video: video,
+    price: price
   };
 
   Course.create(newCourse, function (err, newlycreated) {
