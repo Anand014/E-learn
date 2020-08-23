@@ -1,5 +1,5 @@
 <%- include('./partials/header') %>
-
+<form action="/courses/<%=courseidtoPush%>/mycourses" method="post">
 <div class="container p-5">
   <div class="row">
     <div class="bg-light col-lg-6">
@@ -45,7 +45,9 @@
           <h4>Price</h4>
           <p>30 Days Money Back Guarantee</p>
           <p>₹ <%= price %></p>
-          <a class="btn btn-md btn-success" href="#">Enroll Now</a>
+          <!-- <a class="btn btn-md btn-success" href="#">Enroll Now</a> -->
+          <button class="btn btn-md btn-success" type="submit">Enroll Now</button>
+        </form>
         </div>
       </div>
     </div>

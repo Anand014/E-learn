@@ -106,6 +106,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   googleId: String,
+  mycourses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }]
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -163,7 +164,7 @@ app.get("/login", isLoggedOut, function (req, res) {
   res.render("login");
 });
 
-app.get("/register", function (req, res) {
+app.get("/register",isLoggedOut, function (req, res) {
   res.render("register");
 });
 
@@ -185,7 +186,7 @@ app.get("/about", function (req, res) {
   res.render("about");
 });
 
-app.get("/admin", function (req, res) {
+app.get("/admin",isLoggedOut, function (req, res) {
   res.render("admin");
 });
 
@@ -240,6 +241,38 @@ app.post("/courses", function (req, res) {
   });
 });
 
+app.post("/courses/:courseidtoPush/mycourses",isLoggedIn, function(req, res){
+  const pushCourse = req.params.courseidtoPush;
+
+  User.findById(req.user.id, function(err, foundUser){
+    if(err) {
+        console.log(err);
+    } else {
+        if(foundUser){
+            foundUser.mycourses.push(pushCourse);
+            foundUser.save(function(){
+                console.log("Course Added");
+            });
+        }
+    }
+});
+res.redirect("/")
+});
+
+app.get("/mycourses",isLoggedIn, function(req, res){
+
+  User.findById(req.user.id).populate('mycourses').exec(function(err, user){
+    if(err){
+      console.log(err);
+    }  else { 
+      res.render("mycourses", { user : user});
+      console.log
+    }
+  });
+});
+
+
+
 app.get("/courses/:courseId", function (req, res) {
   const requestedCourseId = req.params.courseId;
 
@@ -258,6 +291,7 @@ app.get("/courses/:courseId", function (req, res) {
       tablebody13: course.tablebody13,
       tablebody23: course.tablebody23,
       price: course.price,
+      courseidtoPush: requestedCourseId
     });
   });
 });
@@ -309,6 +343,14 @@ function isLoggedOut(req, res, next) {
   }
   res.redirect("/");
 }
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/login");
+}
+
 
 app.listen(process.env.PORT || 3000, process.env.IP, () => {
   console.log("The server has started at port 3000.");

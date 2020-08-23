@@ -1,0 +1,24 @@
+<%- include('./partials/header') %>
+    <div class="text-center">
+    <% user.mycourses.forEach(function(mycourse, i){ %>
+
+        <div class="row" style="display: inline-flex;">
+            <div class="col-4">
+              <div class="card m-3" style="width: 18rem;">
+                <h2 class="text-center"><%= user.mycourses[i].name %></h2>
+                <img class="card-img" src="<%= user.mycourses[i].image %>"/>
+                <div class="body m-1">
+                      <a
+                        href="#"
+                        class="btn btn-sm btn-block btn-dark"
+                        >Read Now</a
+                      >
+                </div>
+              </div>
+            </div>
+          </div>
+    <% i-- %>
+      <% }); %>
+    </div>
+      <div class="mb-5"></div>
+<%- include('./partials/footer') %>
