@@ -9,6 +9,14 @@ const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
+const User = require("./models/user");
+const Course = require("./models/courses");
+const editProfileRoutes = require("./routes/editProfile");
+const login = require("./routes/login");
+const register = require("./routes/register");
+const course = require("./routes/course");
+const admin = require("./routes/admin");
+const middleware = require("./middleware");
 
 const app = express();
 
@@ -34,45 +42,17 @@ app.use(function (req, res, next) {
   next();
 });
 
-// mongoose.connect("mongodb://localhost:27017/elearnDB",{ useUnifiedTopology: true, useNewUrlParser: true } );
+app.use("/editProfile",editProfileRoutes);
+app.use("/login",login);
+app.use("/register",register);
+app.use("/courses",course);
+app.use("/admin",admin);
 
+mongoose.connect("mongodb://localhost:27017/elearnDB",{ useUnifiedTopology: true, useNewUrlParser: true } );
 
-mongoose.connect("mongodb+srv://Anand:12345@yourblogdb.lhdpi.mongodb.net/blogDB",{ useUnifiedTopology: true, useNewUrlParser: true });
-
+// mongoose.connect("mongodb+srv://Anand:12345@yourblogdb.lhdpi.mongodb.net/blogDB",{ useUnifiedTopology: true, useNewUrlParser: true });
 
 mongoose.set("useCreateIndex", true);
-
-const courseSchema = {
-  name: String,
-  image: String,
-  tablehead1: String,
-  tablehead2: String,
-  tablebody1: String,
-  tablebody11: String,
-  tablebody12: String,
-  tablebody13: String,
-  tablebody2: String,
-  tablebody21: String,
-  tablebody22: String,
-  tablebody23: String,
-  video: String,
-  price: String
-};
-
-const Course = mongoose.model("Course", courseSchema);
-
-const userSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  password: String,
-  googleId: String,
-  mycourses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }]
-});
-
-userSchema.plugin(passportLocalMongoose);
-userSchema.plugin(findOrCreate);
-
-const User = new mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
 
@@ -120,194 +100,22 @@ app.get("/", function (req, res) {
   res.render("home");
 });
 
-app.get("/login", isLoggedOut, function (req, res) {
-  res.render("login");
-});
-
-app.get("/register",isLoggedOut, function (req, res) {
-  res.render("register");
-});
-
 app.get("/home", function (req, res) {
   res.redirect("/");
-});
-
-app.get("/courses", function (req, res) {
-  Course.find({}, function (err, allcourses) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("courses", { courses: allcourses });
-    }
-  });
 });
 
 app.get("/about", function (req, res) {
   res.render("about");
 });
 
-app.get("/admin",isLoggedOut, function (req, res) {
-  res.render("admin");
-});
 
-app.get("/editProfile",isLoggedIn, function(req, res){
-  res.render("editProfile");
-});
-
-app.post("/editProfile",isLoggedIn, function(req, res){
-  const userName = req.body.username;
-
-  User.updateOne({_id: req.user._id},{
-    name: userName 
-  }, function(err){
-    if(err){
-      console.log(err);
-    } else {
-      res.redirect("/");
-    }
-  });
-});
-
-
-app.post("/admin", function (req, res) {
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  const checkadminPassword = req.body.verify;
-
-  if (checkadminPassword === adminPassword) {
-    res.render("newCourse");
-  } else {
-    res.redirect("admin");
-  }
-});
-
-app.post("/courses", function (req, res) {
-  const name = req.body.name;
-  const image = req.body.image;
-  const tablehead1 = req.body.tablehead1;
-  const tablehead2 = req.body.tablehead2;
-  const tablebody1 = req.body.tablebody1;
-  const tablebody11 = req.body.tablebody11;
-  const tablebody12 = req.body.tablebody12;
-  const tablebody13 = req.body.tablebody13;
-  const tablebody2 = req.body.tablebody2;
-  const tablebody21 = req.body.tablebody21;
-  const tablebody22 = req.body.tablebody22;
-  const tablebody23 = req.body.tablebody23;
-  const video = req.body.video;
-  const price = req.body.price;
-
-  const newCourse = {
-    name: name,
-    image: image,
-    tablehead1: tablehead1,
-    tablehead2: tablehead2,
-    tablebody1: tablebody1,
-    tablebody11: tablebody11,
-    tablebody12: tablebody12,
-    tablebody13: tablebody13,
-    tablebody2: tablebody2,
-    tablebody21: tablebody21,
-    tablebody22: tablebody22,
-    tablebody23: tablebody23,
-    video: video,
-    price: price
-  };
-
-  Course.create(newCourse, function (err, newlycreated) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect("/courses");
-    }
-  });
-});
-
-app.post("/courses/:courseidtoPush/mycourses",isLoggedIn, function(req, res){
-  const pushCourse = req.params.courseidtoPush;
-
-  User.findById(req.user.id, function(err, foundUser){
-    if(err) {
-        console.log(err);
-    } else {
-        if(foundUser){
-            foundUser.mycourses.push(pushCourse);
-            foundUser.save(function(){
-                console.log("Course Added");
-            });
-        }
-    }
-});
-res.redirect("/")
-});
-
-app.get("/mycourses",isLoggedIn, function(req, res){
+app.get("/mycourses",middleware.isLoggedIn, function(req, res){
 
   User.findById(req.user.id).populate('mycourses').exec(function(err, user){
     if(err){
       console.log(err);
     }  else { 
       res.render("mycourses", { user : user});
-      console.log
-    }
-  });
-});
-
-
-
-app.get("/courses/:courseId", function (req, res) {
-  const requestedCourseId = req.params.courseId;
-
-  Course.findOne({ _id: requestedCourseId }, function (err, course) {
-    res.render("courseInfo", {
-      name: course.name,
-      image: course.image,
-      tablehead1: course.tablehead1,
-      tablehead2: course.tablehead2,
-      tablebody1: course.tablebody1,
-      tablebody2: course.tablebody2,
-      tablebody11: course.tablebody11,
-      tablebody21: course.tablebody21,
-      tablebody12: course.tablebody12,
-      tablebody22: course.tablebody22,
-      tablebody13: course.tablebody13,
-      tablebody23: course.tablebody23,
-      price: course.price,
-      courseidtoPush: requestedCourseId
-    });
-  });
-});
-
-app.post("/register", function (req, res) {
-  User.register(
-    { name: req.body.name, username: req.body.username },
-    req.body.password,
-    function (err, user) {
-      if (err) {
-        console.log(err);
-        res.redirect("/register");
-      } else {
-        passport.authenticate("local")(req, res, function () {
-          res.redirect("/");
-        });
-      }
-    }
-  );
-});
-
-app.post("/login", function (req, res) {
-  const user = new User({
-    name: req.body.name,
-    username: req.body.username,
-    password: req.body.password,
-  });
-  req.login(user, function (err) {
-    if (err) {
-      console.log(err);
-      res.redirect("/register");
-    } else {
-      passport.authenticate("local")(req, res, function () {
-        res.redirect("/");
-      });
     }
   });
 });
@@ -316,22 +124,6 @@ app.get("/logout", function (req, res) {
   req.logOut();
   res.redirect("/");
 });
-
-//Middleware --> Checking user is authenticated or not
-function isLoggedOut(req, res, next) {
-  if (!req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect("/");
-}
-
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect("/login");
-}
-
 
 app.listen(process.env.PORT || 3000, process.env.IP, () => {
   console.log("The server has started at port 3000.");

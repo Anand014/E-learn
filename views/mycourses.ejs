@@ -1,12 +1,12 @@
 <%- include('./partials/header') %>
     <div class="text-center">
-    <% user.mycourses.forEach(function(mycourse, i){ %>
+    <% user.mycourses.forEach(function(mycourse){ %>
 
         <div class="row" style="display: inline-flex;">
             <div class="col-4">
               <div class="card m-3" style="width: 18rem;">
-                <h2 class="text-center"><%= user.mycourses[i].name %></h2>
-                <img class="card-img" src="<%= user.mycourses[i].image %>"/>
+                <img class="card-img" src="<%= mycourse.image %>"/>
+                <h2 class="text-center"><%= mycourse.name %></h2>
                 <div class="body m-1">
 
 
@@ -22,7 +22,7 @@
                         <h4 class="modal-title" id="myModalLabel">Course Lecture</h4>
                         </div>
                         <div class="modal-body">
-                          <iframe width="480" height="360" src="<%= user.mycourses[i].video %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                          <iframe width="480" height="360" src="<%=mycourse.video%>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -34,7 +34,6 @@
               </div>
             </div>
           </div>
-    <% i-- %>
       <% }); %>
     </div>
       <div class="mb-5"></div>
