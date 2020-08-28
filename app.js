@@ -48,9 +48,9 @@ app.use("/register",register);
 app.use("/courses",course);
 app.use("/admin",admin);
 
-mongoose.connect("mongodb://localhost:27017/elearnDB",{ useUnifiedTopology: true, useNewUrlParser: true } );
+// mongoose.connect("mongodb://localhost:27017/elearnDB",{ useUnifiedTopology: true, useNewUrlParser: true } );
 
-// mongoose.connect("mongodb+srv://Anand:12345@yourblogdb.lhdpi.mongodb.net/blogDB",{ useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect("mongodb+srv://Anand:12345@yourblogdb.lhdpi.mongodb.net/blogDB",{ useUnifiedTopology: true, useNewUrlParser: true });
 
 mongoose.set("useCreateIndex", true);
 
