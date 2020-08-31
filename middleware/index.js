@@ -1,13 +1,13 @@
-const middlewareObj = {};
+const middleware = {};
 
-middlewareObj.isLoggedOut = function(req, res, next) {
+middleware.isLoggedOut = function(req, res, next) {
         if (!req.isAuthenticated()) {
           return next();
         }
         res.redirect("/");
       }
       
-middlewareObj.isLoggedIn = function(req, res, next) {
+middleware.isLoggedIn = function(req, res, next) {
         if (req.isAuthenticated()) {
           return next();
         }
@@ -15,4 +15,4 @@ middlewareObj.isLoggedIn = function(req, res, next) {
       }
 
 
-module.exports = middlewareObj;
+module.exports = middleware;

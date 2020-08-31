@@ -2,7 +2,6 @@ const express = require("express");
 const User = require("../models/user");
 const passport = require("passport");
 const middleware = require("../middleware");
-const middlewareObj = require("../middleware");
 const router = express.Router();
 
   

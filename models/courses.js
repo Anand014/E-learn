@@ -14,7 +14,8 @@ const courseSchema = {
     tablebody22: String,
     tablebody23: String,
     video: String,
-    price: String
+    price: String,
+    checkEnrolled: { type: Boolean, default: false }
   };
   
 module.exports = mongoose.model("Course", courseSchema);

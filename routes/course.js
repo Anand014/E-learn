@@ -2,7 +2,7 @@ const express = require("express");
 const Course = require("../models/courses");
 const User = require("../models/user");
 const passport = require("passport");
-const { route } = require("./editProfile");
+const { route, use } = require("./editProfile");
 const middleware = require("../middleware");
 const router = express.Router();
 
@@ -60,26 +60,40 @@ router.post("/", function (req, res) {
 });
 
 router.get("/:courseId", function (req, res) {
-    const requestedCourseId = req.params.courseId;
   
+  const requestedCourseId = req.params.courseId;
+  if( req.user ){
+    const usercourses = req.user.mycourses;
+    console.log("EnrolledCoursesId:\n" + usercourses);
+    console.log("IndexOf:\n" + usercourses.indexOf(requestedCourseId));
+        if(usercourses.indexOf(requestedCourseId) != -1)
+        {
+          Course.findOne({ _id: requestedCourseId }, function (err, course) {
+            res.render("courseInfo", {
+              course : course,
+              courseidtoPush: requestedCourseId,
+              checkEnrolled: true
+            });
+        });
+        }
+        else{
+          Course.findOne({ _id: requestedCourseId }, function (err, course) {
+            res.render("courseInfo", {
+              course : course,
+              courseidtoPush: requestedCourseId,
+              checkEnrolled: false
+            });
+        });
+        }
+  } else {
     Course.findOne({ _id: requestedCourseId }, function (err, course) {
       res.render("courseInfo", {
-        name: course.name,
-        image: course.image,
-        tablehead1: course.tablehead1,
-        tablehead2: course.tablehead2,
-        tablebody1: course.tablebody1,
-        tablebody2: course.tablebody2,
-        tablebody11: course.tablebody11,
-        tablebody21: course.tablebody21,
-        tablebody12: course.tablebody12,
-        tablebody22: course.tablebody22,
-        tablebody13: course.tablebody13,
-        tablebody23: course.tablebody23,
-        price: course.price,
-        courseidtoPush: requestedCourseId
+        course : course,
+        courseidtoPush: requestedCourseId,
+        checkEnrolled: false
       });
    });
+  }
 });
 
 router.post("/:courseidtoPush/mycourses",middleware.isLoggedIn, function(req, res){
@@ -97,7 +111,7 @@ router.post("/:courseidtoPush/mycourses",middleware.isLoggedIn, function(req, re
           }
       }
   });
-  res.redirect("/")
+  res.redirect("/mycourses")
 });
 
 module.exports = router;
