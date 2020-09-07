@@ -119,6 +119,17 @@ app.get("/mycourses",middleware.isLoggedIn, function(req, res){
   });
 });
 
+app.get("/mycourses/:lecture",middleware.isLoggedIn, function(req, res){
+  const id = req.params.lecture;
+  Course.findById(id, function(err, foundCourse){
+    if(err){
+      console.log(err)
+    } else {
+      res.render("lecture",{ foundCourse: foundCourse})
+    }
+  });
+});
+
 app.get("/logout", function (req, res) {
   req.logOut();
   res.redirect("/");
