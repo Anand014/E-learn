@@ -11,18 +11,27 @@ router.get("/",middleware.isLoggedOut, function (req, res) {
 
 router.post("/", function (req, res) {
     const user = new User({
-      name: req.body.name,
       username: req.body.username,
-      password: req.body.password,
+      password: req.body.password
     });
     req.login(user, function (err) {
       if (err) {
         console.log(err);
-        res.redirect("/register");
       } else {
-        passport.authenticate("local")(req, res, function () {
-          res.redirect("/");
-        });
+        passport.authenticate('local', function(err, user) {
+          if (err) {
+             return next(err);
+             }
+          if (!user) {
+             return res.redirect('/login'); 
+            }
+          req.logIn(user, function(err) {
+            if (err) {
+              return next(err); 
+            }
+            return res.redirect("/");
+          });
+        })(req, res);
       }
     });
   });
